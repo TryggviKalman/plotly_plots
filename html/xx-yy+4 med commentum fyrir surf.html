@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>xx-yy+4</title>
+    <style>
+        body {font: 10pt arial;}
+    </style>
+    <script src="../plotly.js-gl3d-dist/plotly-gl3d.js"></script>
+</head>
+<body>
+
+    <div id="plotly_graf_xx-yy+4" style="width:800px;height:650px;"></div>
+
+
+
+    <script>
+            function fall(x, y) {
+                return x*x - y*y + 4;
+            }
+
+            var steps = 10; 
+            var axisMin = -2;
+            var axisMax = 2;
+
+            var counter = 0;
+            var axisStep = axisMax / steps;
+            x = []
+            y = []
+            z = []
+            // For surfaces
+            // for (var i = axisMin; i < axisMax; i+=axisStep) {
+            //     x_row = []
+            //     y_row = []
+            //     z_row = []
+            //     for (var j = axisMin; j < axisMax; j+=axisStep) {
+            //         var k = fall(i,j);
+            //         x_row.push(i)
+            //         y_row.push(j)
+            //         z_row.push(k)
+            //     }
+            //     x.push(x_row)
+            //     y.push(y_row)
+            //     z.push(z_row)
+            // }
+            // var data = {
+            //     x: x, 
+            //     y: y, 
+            //     z: z, 
+            //     type: 'scatter3d',
+            //     mode: 'lines',
+            //     showscale: false,
+            //     colorscale: 'Jet',
+            // };
+            // traces = [data];
+
+
+            traces = []
+            for (var i = axisMin; i < axisMax; i+=axisStep) {
+                x1 = []
+                y1 = []
+                z1 = []
+                x2 = []
+                y2 = []
+                z2 = []
+
+                for (var j = axisMin; j < axisMax; j+=axisStep) {
+                    x1.push(i)
+                    y1.push(j)
+                    z1.push(fall(i,j))
+                    
+                    x2.push(j)
+                    y2.push(i)
+                    z2.push(fall(j,i))
+                }
+                horizontal_lines = {
+                    x: x1, 
+                    y: y1, 
+                    z: z1, 
+                    type: 'scatter3d',
+                    mode: 'lines',
+                    showscale: false,
+                    line: {
+                        width: 2,
+                        colorscale: 'Jet',
+                        color: z1,
+                        cmin: 0,
+                        cmax: 8.5,
+                    }
+
+                }
+                vertical_lines = {
+                    x: x2, 
+                    y: y2, 
+                    z: z2, 
+                    type: 'scatter3d',
+                    mode: 'lines',
+                    showscale: false,
+                    line: {
+                        width: 2,
+                        colorscale: 'Jet',
+                        color: z2,
+                        cmin: 0,
+                        cmax: 8.5,
+                    }
+
+                }
+                traces.push(horizontal_lines)
+                traces.push(vertical_lines)
+
+            }
+            // for (var j = axisMin; j < axisMax; j+=axisStep) {
+            //     for (var i = axisMin; i < axisMax; i+=axisStep) {
+            //         k = fall(i,j)
+            //         x.push(i)
+            //         y.push(j)
+            //         z.push(k)
+            //     }
+            // }
+
+
+            
+            var axis_settings = {
+                gridcolor: '#7d7d7d',
+                showspikes: false,
+                showbackground: true,
+                backgroundcolor: 'rgba(0, 0, 0, 0)',
+            };
+
+            var layout = {
+                scene: {
+                    xaxis: axis_settings,
+                    yaxis: axis_settings, 
+                    zaxis: axis_settings,
+                    aspectratio: {
+                        x: 1,
+                        y: 1,
+                        z: 0.6,
+                    },
+                    hovermode: false,
+                },
+                showlegend: false,
+                width: 700,
+                height: 600,
+                margin: {
+                    l: 0,
+                    r: 0,
+                    t: 0,
+                    b: 0
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+            };
+
+            var config = {
+                'displayModeBar': false,
+                'scrollZoom': false,
+            }
+
+        Plotly.newPlot(document.getElementById('plotly_graf_xx-yy+4'), traces, layout, config);
+    </script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

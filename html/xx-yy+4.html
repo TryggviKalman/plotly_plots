@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>xx-yy+4</title>
+    <style>
+        body {font: 10pt arial;}
+    </style>
+    <script src="../plotly.js-gl3d-dist/plotly-gl3d.js"></script>
+    <script>
+
+        function drawPlotyxx_yy_4() {
+            // ====== SETTINGS ==================================================
+            let axis_settings = {
+                gridcolor: '#7d7d7d',
+                showspikes: false,
+                showbackground: true,
+                backgroundcolor: 'rgba(0, 0, 0, 0)',
+                tickmode: 'linear',
+                tick0: 0,
+                dtick: 1,
+            };
+
+            let layout = {
+                scene: {
+                    xaxis: {
+                        gridcolor: '#7d7d7d',
+                        showspikes: false,
+                        showbackground: true,
+                        backgroundcolor: 'rgba(0, 0, 0, 0)',
+                        tickmode: 'array',
+                        tickvals: [-1, 0, 1],
+                    },
+                    yaxis: {
+                        gridcolor: '#7d7d7d',
+                        showspikes: false,
+                        showbackground: true,
+                        backgroundcolor: 'rgba(0, 0, 0, 0)',
+                        tickmode: 'array',
+                        tickvals: [-1, 0, 1],
+                    }, 
+                    zaxis: {
+                        gridcolor: '#7d7d7d',
+                        showspikes: false,
+                        showbackground: true,
+                        backgroundcolor: 'rgba(0, 0, 0, 0)',
+                        tickmode: 'linear',
+                        tick0: 0,
+                        dtick: 2,
+                    },
+                    aspectratio: {
+                        x: 1,
+                        y: 1,
+                        z: 0.7,
+                    },
+                    hovermode: false,
+                    camera: {
+                        center: {
+                            x: .3, 
+                            y: .3, 
+                            z: 0,
+                        },
+                        eye: {
+                            x: 1.4,
+                            y: 1.1,
+                            z: .7,
+                        }
+                    },
+                },
+                showlegend: false,
+                width: 700,
+                height: 500,
+                margin: {
+                    l: 0,
+                    r: 0,
+                    t: 0,
+                    b: 0,
+                },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+            };
+
+            let config = {
+                'displayModeBar': false,
+                'scrollZoom': false,
+            }
+
+
+            // ====== PLOT ==================================================
+
+            function fall(x, y) {
+                return x*x - y*y + 4;
+            }
+
+            let steps = 16;
+            let axisMin = -2;
+            let axisMax = 2;
+
+            let counter = 0;
+            let axisStep = axisMax / steps;
+
+
+            let traces = []
+            // The saddle
+            for (var i = axisMin; i < axisMax; i+=axisStep) {
+                let x1 = []
+                let y1 = []
+                let z1 = []
+                let x2 = []
+                let y2 = []
+                let z2 = []
+
+                for (var j = axisMin; j < axisMax; j+=axisStep) {
+                    x1.push(i)
+                    y1.push(j)
+                    z1.push(fall(i,j))
+                    x2.push(j)
+                    y2.push(i)
+                    z2.push(fall(j,i))
+                }
+                let horizontal_lines = {
+                    x: x1, 
+                    y: y1, 
+                    z: z1, 
+                    type: 'scatter3d',
+                    mode: 'lines',
+                    showscale: false,
+                    line: {
+                        width: 2,
+                        colorscale: 'Jet',
+                        color: z1,
+                        cmin: 0,
+                        cmax: 8.5,
+                    }
+                }
+                let vertical_lines = {
+                    x: x2, 
+                    y: y2, 
+                    z: z2, 
+                    type: 'scatter3d',
+                    mode: 'lines',
+                    showscale: false,
+                    line: {
+                        width: 2,
+                        colorscale: 'Jet',
+                        color: z2,
+                        cmin: 0,
+                        cmax: 8.5,
+                    }
+                }
+                traces.push(horizontal_lines)
+                traces.push(vertical_lines)
+            }
+
+            // Circles
+            let x = []
+            let y = []
+            let z = []
+            let z0 = []
+            for (var t = 0; t < 6.5; t+=0.2) { // rúmlega tá til að loka hringnum örugglega
+                let i = Math.cos(t)
+                let j = Math.sin(t)
+                let k = fall(i, j)
+                x.push(i)
+                y.push(j)
+                z.push(k)
+                z0.push(0)
+            }
+            let data_circle_saddle = {
+                x: x, 
+                y: y,
+                z: z,
+                type: 'scatter3d',
+                mode: 'lines',
+                showscale: false,
+                line: {
+                    width: 2,
+                    color: 'black',
+                }
+            }
+            let data_circle_xy = {
+                x: x, 
+                y: y,
+                z: z0,
+                type: 'scatter3d',
+                mode: 'lines',
+                showscale: false,
+                line: {
+                    width: 2,
+                    color: 'black',
+                }
+            }
+            traces.push(data_circle_saddle)
+            traces.push(data_circle_xy)
+
+
+            Plotly.newPlot(document.getElementById('plotly_graf_xx_yy_4'), traces, layout, config);
+        }
+    </script>
+</head>
+<body onload="drawPlotyxx_yy_4();">
+
+    <div id="plotly_graf_xx_yy_4"></div>
+
+</body>
+</html>
